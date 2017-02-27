@@ -4,23 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.domain.User;
-
-import cn.ucai.superwechat.I;
-import cn.ucai.superwechat.R;
-import cn.ucai.superwechat.ui.AddContactActivity;
-import cn.ucai.superwechat.ui.ChatActivity;
-import cn.ucai.superwechat.ui.DetailsActivity;
-import cn.ucai.superwechat.ui.LoginActivity;
-import cn.ucai.superwechat.ui.MainActivity;
-import cn.ucai.superwechat.ui.RegisterActivity;
-import cn.ucai.superwechat.ui.SettingActivity;
-import cn.ucai.superwechat.ui.SplashActivity;
-import cn.ucai.superwechat.ui.UserProfileActivity;
-import cn.ucai.superwechat.ui.ValidateActivity;
-import cn.ucai.superwechat.ui.VideoCallActivity;
-import cn.ucai.superwechat.ui.WelcomeActivity;
+import cn.ucai.live.R;
+import cn.ucai.live.ui.activity.LoginActivity;
+import cn.ucai.live.ui.activity.MainActivity;
+import cn.ucai.live.ui.activity.RegisterActivity;
 
 
 /**
@@ -53,52 +40,9 @@ public class MFGT {
         startActivity((Activity)context, RegisterActivity.class);
     }
 
-    public static void gotoWelcome(SplashActivity splashActivity) {
-        startActivity(splashActivity, WelcomeActivity.class);
-    }
-
-
-    public static void gotoSettings(Activity activity) {
-        startActivity(activity, SettingActivity.class);
-    }
-
-    public static void gotoUserProfile(Activity activity) {
-        startActivity(activity, UserProfileActivity.class);
-    }
-    public static void gotoAddContact(Activity activity){
-        startActivity(activity, AddContactActivity.class);
-    }
-
-    public static void gotoDetails(Context context , User user){
-        startActivity((Activity)context, new Intent(context,DetailsActivity.class)
-                .putExtra(I.User.TABLE_NAME,user));
-    }
-    public static void gotoDetails(Activity activity , String username){
-        if (username.equals(EMClient.getInstance().getCurrentUser())) {
-            gotoUserProfile(activity);
-        }else {
-            startActivity(activity, new Intent(activity,DetailsActivity.class)
-                    .putExtra(I.User.USER_NAME,username));
-        }
-    }
-    public static void gotoValidate(DetailsActivity activity, String userName) {
-        startActivity(activity,new Intent(activity, ValidateActivity.class)
-        .putExtra(I.User.USER_NAME,userName));
-    }
-
-    public static void gotoChat(Activity activity, String username) {
-        startActivity(activity,new Intent(activity, ChatActivity.class)
-                .putExtra("userId", username));
-
-    }
     public static void gotoMain(Activity activity){
         startActivity(activity,new Intent(activity,MainActivity.class)
         .putExtra(I.BACK_MAIN_FROM_CHAT,true));
-    }
-
-    public static void gotoVideo(DetailsActivity activity, String mUserName) {
-        startActivity(activity,new Intent(activity, VideoCallActivity.class).putExtra("username", mUserName)
-                .putExtra("isComingCall", false));
     }
 }
 
