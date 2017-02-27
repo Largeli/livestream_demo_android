@@ -1,27 +1,25 @@
 package com.hyphenate.easeui.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMOptions;
-import com.hyphenate.chat.EMMessage.ChatType;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.domain.EaseEmojicon;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.model.EaseAtMessageHelper;
-import com.hyphenate.easeui.model.EaseNotifier;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
+
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.domain.EaseEmojicon;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.model.EaseAtMessageHelper;
+import com.hyphenate.easeui.model.EaseNotifier;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public final class EaseUI {
     private static final String TAG = EaseUI.class.getSimpleName();
@@ -185,7 +183,7 @@ public final class EaseUI {
     
     /**
      * set user profile provider
-     * @param provider
+     * @param userProvider
      */
     public void setUserProfileProvider(EaseUserProfileProvider userProvider){
         this.userProvider = userProvider;
@@ -245,10 +243,12 @@ public final class EaseUI {
     public interface EaseUserProfileProvider {
         /**
          * return EaseUser for input username
-         * @param username
+         * @param User
          * @return
          */
         EaseUser getUser(String username);
+
+        User getAppUser(String username);
     }
     
     /**
