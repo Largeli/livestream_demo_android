@@ -74,7 +74,7 @@ public class RegisterActivity extends BaseActivity {
                     return;
                 } else if (TextUtils.isEmpty(usernick)) {
                     CommonUtils.showShortToast(R.string.User_nick_cannot_be_empty);
-                    etPassword.requestFocus();
+                    etUserNick.requestFocus();
                     return;
                 } else if (TextUtils.isEmpty(pwd)) {
                     CommonUtils.showShortToast(R.string.Password_cannot_be_empty);

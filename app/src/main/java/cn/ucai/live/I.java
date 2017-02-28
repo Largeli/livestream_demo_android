@@ -209,6 +209,13 @@ public interface I {
 
 	String BACK_MAIN_FROM_CHAT                      =        "back_main_from_chat";
 
+	String REQUEST_ALL_GIFTS                        =         "live/getAllGifts";
+	String REQUEST_RECHARGE_STATEMENTS_PAGE         =         "live/getRechargeStatemants";
+	String REQUEST_BALANCE                          =         "live/getBalance";
+	String REQUEST_ANCHOR_GIFT                      =         "live/getGiftStatementsByAnchor";
+	String REQUEST_GIVING_GIGT                      =         "live/givingGifts";
+	String REQUEST_RECHARGE                        =         "live/recharge";
+	String REQUEST_GET_ALL_CHATROOM                 =          "getAllChatRoom";
 	 int REQUESTCODE_PICK = 1;
 	 int REQUESTCODE_CUTTING = 2;
 	int REQUESTCODE_MEMBER = 3;
