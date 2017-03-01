@@ -80,19 +80,21 @@ public class ResultUtils {
         return  null;
     }
 
-    public static <T> List<T> getEMResultFromJson(String jsonStr, Class<T> sclass) {
+    public static String getEMResultFromJson(String jsonStr) {
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            if (!jsonObject.isNull("data")) {
-                JSONArray arrya = jsonObject.getJSONArray("data");
-                if (arrya != null) {
-                    List<T> list = new ArrayList<>();
-                    for(int i = 0;i<arrya.length();i++) {
-                        JSONObject jsonGroupAvatar = arrya.getJSONObject(i);
-                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(),sclass);
-                        list.add(ga);
-                    }
-                    return  list;
+            if (!jsonObject.isNull("id")) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                if (!data.isNull("id")) {
+                    String id = data.getString("id");
+                    return id;
+//                    List<T> list = new ArrayList<>();
+//                    for(int i = 0;i<arrya.length();i++) {
+//                        JSONObject jsonGroupAvatar = arrya.getJSONObject(i);
+//                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(),sclass);
+//                        list.add(ga);
+//                    }
+//                    return  list;
                 }
             }
             return null;
