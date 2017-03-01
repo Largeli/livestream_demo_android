@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,13 +35,15 @@ import butterknife.ButterKnife;
 import cn.ucai.live.R;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.ui.GridMarginDecoration;
+import cn.ucai.live.utils.L;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class LiveListFragment extends Fragment {
+    private static final String TAG = LiveListFragment.class.getSimpleName();
 //    private ProgressBar pb;
-    private ListView listView;
+//    private ListView listView;
     private LiveAdapter adapter;
     private List<EMChatRoom> chatRoomList;
     private boolean isLoading;
@@ -72,17 +73,18 @@ public class LiveListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        recyclerView = (RecyclerView) getView().findViewById(R.id.recycleview);
         chatRoomList = new ArrayList<EMChatRoom>();
         rooms = new ArrayList<EMChatRoom>();
-        adapter = new LiveAdapter(getContext(),getLiveRoomList(chatRoomList));
-        recyclerView = (RecyclerView) getView().findViewById(R.id.recycleview);
+//        L.e(TAG,"onActivityCreated");
+//        adapter = new LiveAdapter(getContext(),getLiveRoomList(chatRoomList));
 //        GridLayoutManager glm = (GridLayoutManager) recyclerView.getLayoutManager();
 //        footView = getView().inflate(R.layout.em_listview_footer_view, recyclerView, false);
         gm = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(gm);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new GridMarginDecoration(6));
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
 
 //        footLoadingLayout = (LinearLayout) footView.findViewById(R.id.loading_layout);
 //        footLoadingPB = (ProgressBar)footView.findViewById(R.id.loading_bar);
@@ -136,20 +138,18 @@ public class LiveListFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
-                    if(pageCount != 0){
-                        int lasPos = gm.findLastVisibleItemPosition();
-                        if(hasMoreData && !isLoading && lasPos == adapter.getItemCount()-1){
-                            loadAndShowData();
-                        }
+                    int lasPos = gm.findLastVisibleItemPosition();
+//                    L.e(TAG,"setPullUpListener");
+                    if (hasMoreData && !isLoading && lasPos == chatRoomList.size() - 1) {
+                        loadAndShowData();
                     }
-
                 }
             }
         });
     }
     private void loadAndShowData() {
+//        L.e(TAG,"loadAndShowData");
         new Thread(new Runnable() {
-
             public void run() {
                 try {
                     isLoading = true;
@@ -157,8 +157,8 @@ public class LiveListFragment extends Fragment {
                             chatroomManager().fetchPublicChatRoomsFromServer(pagesize,cursor );
                     //get chat room list
                     final List<EMChatRoom> chatRooms = result.getData();
+                    L.e(TAG,"chatRooms="+chatRooms.size()+",isFirstLoading="+isFirstLoading);
                     getActivity().runOnUiThread(new Runnable() {
-
                         public void run() {
                             chatRoomList.addAll(chatRooms);
                             if(chatRooms.size() != 0){
@@ -170,7 +170,7 @@ public class LiveListFragment extends Fragment {
 //                                pb.setVisibility(View.INVISIBLE);
                                 isFirstLoading = false;
                                 adapter = new LiveAdapter(getContext(), getLiveRoomList(chatRoomList));
-//                                listView.setAdapter(adapter);
+                                recyclerView.setAdapter(adapter);
 //                                rooms.addAll(chatRooms);
                             }else{
                                 if(chatRooms.size() < pagesize){
