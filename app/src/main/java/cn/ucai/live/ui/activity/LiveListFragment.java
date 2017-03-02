@@ -97,7 +97,7 @@ public class LiveListFragment extends Fragment {
         footLoadingText = (TextView) getView().findViewById(R.id.loading_text);
 //        listView.addFooterView(footView, null, false);
         footLoadingLayout.setVisibility(View.GONE);
-        footLoadingPB.setVisibility(View.GONE);
+//        footLoadingPB.setVisibility(View.GONE);
         loadAndShowData();
         setListener();
     }
@@ -112,16 +112,19 @@ public class LiveListFragment extends Fragment {
         msl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                L.e(TAG,"setPullDownListener");
+//                L.e(TAG,"setPullDownListener");
                 msl.setRefreshing(true);
                 tvRefresh.setVisibility(View.VISIBLE);
                 cursor=null;
+                isFirstLoading = true;
+                chatRoomList.clear();
                 loadAndShowData();
             }
         });
     }
 
     private void setchatromListener() {
+//        L.e(TAG,"setchatromListener");
         EMClient.getInstance().chatroomManager().addChatRoomChangeListener(new EMChatRoomChangeListener(){
             @Override
             public void onChatRoomDestroyed(String roomId, String roomName) {
@@ -133,7 +136,6 @@ public class LiveListFragment extends Fragment {
                         public void run() {
                             if(adapter != null){
                                 adapter.notifyDataSetChanged();
-                                L.e(TAG,"setchatromListener");
                                 loadAndShowData();
                             }
                         }
@@ -157,6 +159,7 @@ public class LiveListFragment extends Fragment {
 
             }
         });
+//        setPullUpListener();
     }
 
     private void setPullUpListener(){
@@ -166,7 +169,7 @@ public class LiveListFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
                     int lasPos = gm.findLastVisibleItemPosition();
-                    L.e(TAG,"setPullUpListener");
+//                    L.e(TAG,"setPullUpListener");
                     if (hasMoreData && !isLoading && lasPos == chatRoomList.size() - 1) {
                         loadAndShowData();
                     }
@@ -177,7 +180,7 @@ public class LiveListFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int firstPosition = gm.findFirstVisibleItemPosition();
-                msl.setRefreshing(firstPosition==0);
+                msl.setEnabled(firstPosition==0);
             }
         });
     }
@@ -197,6 +200,7 @@ public class LiveListFragment extends Fragment {
                             msl.setRefreshing(false);
                             tvRefresh.setVisibility(View.GONE);
                             chatRoomList.addAll(chatRooms);
+                            L.e(TAG,"chatRooms="+chatRooms.size());
                             if(chatRooms.size() != 0){
                                 cursor = result.getCursor();
                                 if(chatRooms.size() == pagesize)
@@ -210,12 +214,13 @@ public class LiveListFragment extends Fragment {
 //                                rooms.addAll(chatRooms);
                             }else{
                                 if(chatRooms.size() < pagesize){
+                                    L.e(TAG,"没有更多数据！");
                                     hasMoreData = false;
                                     msl.setRefreshing(false);
                                     tvRefresh.setVisibility(View.GONE);
                                     footLoadingLayout.setVisibility(View.VISIBLE);
                                     footLoadingPB.setVisibility(View.GONE);
-                                    footLoadingText.setText("No more data");
+                                    footLoadingText.setText("没有更多数据");
                                 }
                                 adapter.notifyDataSetChanged();
                             }
@@ -232,7 +237,7 @@ public class LiveListFragment extends Fragment {
                             tvRefresh.setVisibility(View.GONE);
 //                            pb.setVisibility(View.INVISIBLE);
                             footLoadingLayout.setVisibility(View.GONE);
-                            Toast.makeText(getActivity(), getResources().getString(R.string.failed_to_load_data), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), getResources().getString(R.string.failed_to_load_data), Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -258,6 +263,14 @@ public class LiveListFragment extends Fragment {
 
         return roomList;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cursor = null;
+        loadAndShowData();
+    }
+
     static class LiveAdapter extends RecyclerView.Adapter<PhotoViewHolder> {
 
         private final List<LiveRoom> liveRoomList;
