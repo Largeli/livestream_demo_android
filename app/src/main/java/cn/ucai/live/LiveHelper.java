@@ -44,6 +44,7 @@ import java.util.Map;
 import cn.ucai.live.data.NetDao;
 import cn.ucai.live.data.local.DemoDBManager;
 import cn.ucai.live.data.local.UserDao;
+import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.Result;
 import cn.ucai.live.ui.activity.ChatActivity;
 import cn.ucai.live.ui.activity.LoginActivity;
@@ -80,7 +81,7 @@ public class LiveHelper {
 	private Map<String, EaseUser> contactList;
 
     private Map<String,User> appContactList;
-
+    private Map<Integer,Gift> appGiftList;
 	private static LiveHelper instance = null;
 
 	private LiveModel demoModel = null;
@@ -156,11 +157,46 @@ public class LiveHelper {
             setGlobalListeners();
 			broadcastManager = LocalBroadcastManager.getInstance(appContext);
 	        initDbDao();
+            initGiftList();
 		}
 	}
 
+    private void initGiftList() {
+        NetDao.loadAllGift(appContext, new OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s,Gift.class);
+                    if (result != null && result.isRetMsg()) {
+                        List<Gift> list = (List<Gift>) result.getRetData();
+                        if (list != null && list.size() > 0) {
+                            L.e(TAG,"gift list="+list.size());
+                            Map<Integer,Gift> giftlist = new HashMap<Integer, Gift>();
+                            for (Gift gift : list) {
+                                giftlist.put(gift.getId(),gift);
+                            }
+                            // save the contact list to cache
+                            getAppGiftList().clear();
+                            getAppGiftList().putAll(giftlist);
+                            // save the contact list to database
+                            UserDao dao = new UserDao(appContext);
+                            List<Gift> gifts = new ArrayList<Gift>(giftlist.values());
+                            dao.saveAppGiftList(gifts);
+                        }
+                    }
+                }
+            }
 
-	private EMOptions initChatOptions(){
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+
+    private EMOptions initChatOptions(){
         Log.d(TAG, "init HuanXin Options");
 
         EMOptions options = new EMOptions();
@@ -1159,4 +1195,40 @@ public class LiveHelper {
             }
         });
     }
+
+    /**
+     * update contact list
+     *
+     * @param list
+     */
+    public void setAppGiftList(Map<Integer, Gift> list) {
+        if(list == null){
+            if (appGiftList != null) {
+                appGiftList.clear();
+            }
+            return;
+        }
+
+        appGiftList = list;
+    }
+
+    /**
+     * get contact list
+     *
+     * @return
+     */
+    public Map<Integer, Gift> getAppGiftList() {
+        if (appGiftList == null || appGiftList.size()==0) {
+            appGiftList = demoModel.getAppGiftList();
+        }
+
+        // return a empty non-null object to avoid app crash
+        if(appGiftList == null){
+            return new Hashtable<Integer, Gift>();
+        }
+
+        return appGiftList;
+    }
+
 }
+
