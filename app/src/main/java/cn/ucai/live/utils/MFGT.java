@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import cn.ucai.live.I;
 import cn.ucai.live.R;
 import cn.ucai.live.ui.activity.LoginActivity;
 import cn.ucai.live.ui.activity.MainActivity;

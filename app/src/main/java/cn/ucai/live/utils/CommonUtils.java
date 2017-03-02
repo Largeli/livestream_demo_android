@@ -2,6 +2,7 @@ package cn.ucai.live.utils;
 
 import android.widget.Toast;
 
+import cn.ucai.live.I;
 import cn.ucai.live.LiveApplication;
 import cn.ucai.live.R;
 

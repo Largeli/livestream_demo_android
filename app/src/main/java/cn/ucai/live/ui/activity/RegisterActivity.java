@@ -16,12 +16,12 @@ import com.hyphenate.exceptions.HyphenateException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.live.I;
 import cn.ucai.live.LiveHelper;
 import cn.ucai.live.R;
 import cn.ucai.live.data.NetDao;
 import cn.ucai.live.data.model.Result;
 import cn.ucai.live.utils.CommonUtils;
-import cn.ucai.live.utils.I;
 import cn.ucai.live.utils.L;
 import cn.ucai.live.utils.MD5;
 import cn.ucai.live.utils.OnCompleteListener;
