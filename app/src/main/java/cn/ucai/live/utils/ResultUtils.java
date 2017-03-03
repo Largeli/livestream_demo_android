@@ -84,7 +84,7 @@ public class ResultUtils {
     public static String getEMResultFromJson(String jsonStr) {
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
-            if (!jsonObject.isNull("id")) {
+            if (!jsonObject.isNull("data")) {
                 JSONObject data = jsonObject.getJSONObject("data");
                 if (!data.isNull("id")) {
                     String id = data.getString("id");

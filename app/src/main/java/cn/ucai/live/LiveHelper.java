@@ -166,11 +166,12 @@ public class LiveHelper {
             @Override
             public void onSuccess(String s) {
                 if (s != null) {
-                    Result result = ResultUtils.getResultFromJson(s,Gift.class);
+                    Log.e("LiveHelper","s = "+s);
+                    Result result = ResultUtils.getListResultFromJson(s,Gift.class);
                     if (result != null && result.isRetMsg()) {
                         List<Gift> list = (List<Gift>) result.getRetData();
                         if (list != null && list.size() > 0) {
-                            L.e(TAG,"gift list="+list.size());
+                            Log.e("LiveHelper","gift list="+list.size());
                             Map<Integer,Gift> giftlist = new HashMap<Integer, Gift>();
                             for (Gift gift : list) {
                                 giftlist.put(gift.getId(),gift);
