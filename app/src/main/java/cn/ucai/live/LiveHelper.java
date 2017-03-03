@@ -171,7 +171,7 @@ public class LiveHelper {
                     if (result != null && result.isRetMsg()) {
                         List<Gift> list = (List<Gift>) result.getRetData();
                         if (list != null && list.size() > 0) {
-                            Log.e("LiveHelper","gift list="+list.size());
+//                            Log.e("LiveHelper","gift list="+list.size());
                             Map<Integer,Gift> giftlist = new HashMap<Integer, Gift>();
                             for (Gift gift : list) {
                                 giftlist.put(gift.getId(),gift);
@@ -1148,6 +1148,7 @@ public class LiveHelper {
     public Map<String, User> getAppContactList() {
         if (isLoggedIn() && (appContactList == null|| appContactList.size()==0)) {
             appContactList = demoModel.getAppContactList();
+            Log.e("LiveHelper:","appContactList="+appContactList.toString());
         }
 
         // return a empty non-null object to avoid app crash
