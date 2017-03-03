@@ -2,6 +2,7 @@ package cn.ucai.live.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -49,6 +50,7 @@ public class LiveDetailsActivity extends LiveBaseActivity implements UVideoView.
         LiveRoom liveRoom = getIntent().getParcelableExtra("liveroom");
         liveId = liveRoom.getId();
         chatroomId = liveRoom.getChatroomId();
+        Log.e("qwe", "onActivityCreate: liveId = "+liveId+" chatRoomId="+chatroomId);
         String coverRes = liveRoom.getCover();
 //        coverView.setImageResource(coverRes);
         EaseUserUtils.setAppUserAvatar(LiveDetailsActivity.this,liveRoom.getAnchorId(),coverView);
