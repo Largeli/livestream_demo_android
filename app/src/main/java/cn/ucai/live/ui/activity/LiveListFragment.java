@@ -298,11 +298,9 @@ public class LiveListFragment extends Fragment {
                         context.startActivity(new Intent(context, StartLiveActivity.class)
                                 .putExtra("liveroom", liveRoomList.get(position)));
                     }else {
-                        context.startActivity(new Intent(context,LiveDetailsActivity.class)
-                        .putExtra("liveId",liveRoomList.get(position)));
+                        context.startActivity(new Intent(context, LiveDetailsActivity.class)
+                                .putExtra("liveroom", liveRoomList.get(position)));
                     }
-                    context.startActivity(new Intent(context, LiveDetailsActivity.class)
-                            .putExtra("liveroom", liveRoomList.get(position)));
                 }
             });
             return holder;

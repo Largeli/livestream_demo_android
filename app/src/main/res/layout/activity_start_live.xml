@@ -187,7 +187,9 @@
       android:layout_height="300dp"
       android:id="@+id/message_container"
       android:layout_alignParentBottom="true"
-      ></RelativeLayout>
+      >
+
+  </RelativeLayout>
 
   <ImageView
       android:id="@+id/cover_image"

@@ -154,7 +154,8 @@ public abstract class LiveBaseActivity extends BaseActivity {
       @Override public void run() {
         String nick = message.getStringAttribute(I.User.NICK,message.getFrom());
         leftGiftView2.setVisibility(View.VISIBLE);
-        leftGiftView2.setName(message.getFrom());
+        leftGiftView2.setName(nick);
+        leftGiftView2.setAvatar(message.getFrom());
         leftGiftView2.setTranslationY(0);
         ViewAnimator.animate(leftGiftView2)
             .alpha(0, 1)
