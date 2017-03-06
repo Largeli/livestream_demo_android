@@ -12,10 +12,12 @@ import com.hyphenate.chat.EMClient;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.live.R;
 import cn.ucai.live.data.NetDao;
 import cn.ucai.live.data.model.Result;
 import cn.ucai.live.data.model.Wallet;
+import cn.ucai.live.utils.MFGT;
 import cn.ucai.live.utils.OnCompleteListener;
 import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.ResultUtils;
@@ -31,14 +33,15 @@ public class ChangeActivity extends BaseActivity {
     LinearLayout targetLayout;
     View loadingView;
     int change;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change);
         ButterKnife.bind(this);
-        Log.e("ChangeActivity","oncreate");
+        Log.e("ChangeActivity", "oncreate");
         loadingView = LayoutInflater.from(ChangeActivity.this)
-                .inflate(R.layout.rp_loading,targetLayout,false);
+                .inflate(R.layout.rp_loading, targetLayout, false);
         targetLayout.addView(loadingView);
         initData();
     }
@@ -51,7 +54,7 @@ public class ChangeActivity extends BaseActivity {
                         boolean success = false;
                         if (s != null) {
                             Result result = ResultUtils.getResultFromJson(s, Wallet.class);
-                            if (result != null&& result.isRetMsg()) {
+                            if (result != null && result.isRetMsg()) {
                                 success = true;
                                 Wallet wallet = (Wallet) result.getRetData();
                                 PreferenceManager.getInstance().setCurrentuserChange(wallet.getBalance());
@@ -75,12 +78,26 @@ public class ChangeActivity extends BaseActivity {
 
     private void setChange() {
         change = PreferenceManager.getInstance().getCurrentuserChange();
-        tvChangeBalance.setText("￥"+Float.valueOf(String.valueOf(change)));
+        tvChangeBalance.setText("￥" + Float.valueOf(String.valueOf(change)));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         initData();
+    }
+
+    @OnClick({R.id.tv_change_recharge, R.id.tv_change_withdraw,R.id.iv_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_change_recharge:
+                MFGT.gotoChangeRecharge(ChangeActivity.this);
+                break;
+            case R.id.tv_change_withdraw:
+                break;
+            case R.id.iv_back:
+                MFGT.finish(ChangeActivity.this);
+                break;
+        }
     }
 }
