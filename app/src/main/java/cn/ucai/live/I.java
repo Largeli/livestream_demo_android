@@ -221,8 +221,10 @@ public interface I {
 	String REQUEST_GET_ALL_CHATROOM                 =          "live/getAllChatRoom";
 	String REQUEST_CREATE_CHATROOM                   =          "live/createChatRoom";
 	String REQUEST_DELETE_CHATROOM                   =          "live/deleteChatRoom";
+	/** 客户端根据用户名获取账户余额*/
+	String REQUEST_GET_BALANCE 						= 		"getBalance";
 
-	 int REQUESTCODE_PICK = 1;
+	int REQUESTCODE_PICK = 1;
 	 int REQUESTCODE_CUTTING = 2;
 	int REQUESTCODE_MEMBER = 3;
 
