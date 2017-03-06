@@ -115,6 +115,5 @@ public class MyProfileFragment extends Fragment {
     }
     @OnClick(R.id.rl_change)public void mychange(){
         MFGT.gotoChange(getActivity());
-
     }
 }

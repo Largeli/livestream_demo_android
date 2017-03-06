@@ -192,5 +192,14 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
-
+    public static void loadGivingGigt(Context context,String username,String cname,int giftId,int giftNum ,OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_GIVING_GIGT)
+                .addParam("uname",username)
+                .addParam("anchor",cname)
+                .addParam("giftId",String.valueOf(giftId))
+                .addParam("giftNum",String.valueOf(giftNum))
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }

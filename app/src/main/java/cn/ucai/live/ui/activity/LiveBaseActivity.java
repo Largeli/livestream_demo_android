@@ -46,13 +46,19 @@ import cn.ucai.live.I;
 import cn.ucai.live.LiveConstants;
 import cn.ucai.live.LiveHelper;
 import cn.ucai.live.R;
+import cn.ucai.live.data.NetDao;
 import cn.ucai.live.data.TestAvatarRepository;
 import cn.ucai.live.data.model.Gift;
+import cn.ucai.live.data.model.Result;
+import cn.ucai.live.data.model.Wallet;
 import cn.ucai.live.ui.widget.BarrageLayout;
 import cn.ucai.live.ui.widget.LiveLeftGiftView;
 import cn.ucai.live.ui.widget.PeriscopeLayout;
 import cn.ucai.live.ui.widget.RoomMessagesView;
+import cn.ucai.live.utils.CommonUtils;
+import cn.ucai.live.utils.OnCompleteListener;
 import cn.ucai.live.utils.PreferenceManager;
+import cn.ucai.live.utils.ResultUtils;
 import cn.ucai.live.utils.Utils;
 
 /**
@@ -466,10 +472,10 @@ public abstract class LiveBaseActivity extends BaseActivity {
     dialog.show(getSupportFragmentManager(), "RoomGiftListDialog");
   }
   private void showPayMentTip(final RoomGiftListDialog dialog,final int id){
+    final Gift gift = LiveHelper.getInstance().getAppGiftList().get(id);
     if (PreferenceManager.getInstance().getPayMentTip()){
-      sendGiftMsg(dialog,id);
+      sendGift(gift,dialog);
     }else{
-      Gift gift = LiveHelper.getInstance().getAppGiftList().get(id);
       final AlertDialog.Builder builder = new AlertDialog.Builder(LiveBaseActivity.this);
       builder.setTitle("提示")
               .setMessage("该礼物需要支付"+gift.getGprice()+",你确认支付么?");
@@ -485,7 +491,54 @@ public abstract class LiveBaseActivity extends BaseActivity {
       builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface d, int which) {
-          sendGiftMsg(dialog,id);
+          sendGift(gift,dialog);
+        }
+      }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          dialog.dismiss();
+        }
+      });
+      builder.show();
+    }
+  }
+  private void sendGift(final Gift gift, final RoomGiftListDialog dialog){
+    int change = PreferenceManager.getInstance().getCurrentuserChange();
+    if (change >= gift.getGprice()) {
+      NetDao.loadGivingGigt(LiveBaseActivity.this, EMClient.getInstance().getCurrentUser(),
+              chatroom.getOwner(), gift.getId(), 1,
+              new OnCompleteListener<String>() {
+                @Override
+                public void onSuccess(String s) {
+                  boolean success = false;
+                  if (s != null) {
+                    Result result = ResultUtils.getResultFromJson(s, Wallet.class);
+                    if (result != null&& result.isRetMsg()) {
+                      success = true;
+                      Wallet wallet = (Wallet) result.getRetData();
+                      PreferenceManager.getInstance().setCurrentuserChange(wallet.getBalance());
+                      sendGiftMsg(dialog,gift.getId());
+                    }
+                  }
+                  if (!success) {
+                    CommonUtils.showShortToast("礼物发送失败！");
+                  }
+                }
+
+                @Override
+                public void onError(String error) {
+                  CommonUtils.showShortToast("礼物发送失败！");
+                }
+              });
+    }else {
+      final AlertDialog.Builder builder = new AlertDialog.Builder(LiveBaseActivity.this);
+      builder.setTitle("充值")
+              .setMessage("该礼物需要支付"+gift.getGprice()+",余额不足，你确认充值么?");
+      builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface d, int which) {
+//          sendGiftMsg(dialog,id);
+          dialog.dismiss();
         }
       }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
         @Override
