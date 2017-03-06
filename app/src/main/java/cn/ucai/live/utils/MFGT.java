@@ -11,6 +11,7 @@ import cn.ucai.live.ui.activity.ChangeRechargeActivity;
 import cn.ucai.live.ui.activity.LoginActivity;
 import cn.ucai.live.ui.activity.MainActivity;
 import cn.ucai.live.ui.activity.RegisterActivity;
+import cn.ucai.live.ui.activity.SendRecordActivity;
 
 
 /**
@@ -54,6 +55,10 @@ public class MFGT {
 
     public static void gotoChangeRecharge(Activity activity) {
         startActivity(activity, ChangeRechargeActivity.class);
+    }
+
+    public static void gotoSendRecord(Activity activity) {
+        startActivity(activity, SendRecordActivity.class);
     }
 }
 
