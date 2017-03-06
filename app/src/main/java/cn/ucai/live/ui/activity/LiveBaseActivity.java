@@ -56,6 +56,7 @@ import cn.ucai.live.ui.widget.LiveLeftGiftView;
 import cn.ucai.live.ui.widget.PeriscopeLayout;
 import cn.ucai.live.ui.widget.RoomMessagesView;
 import cn.ucai.live.utils.CommonUtils;
+import cn.ucai.live.utils.MFGT;
 import cn.ucai.live.utils.OnCompleteListener;
 import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.ResultUtils;
@@ -537,7 +538,7 @@ public abstract class LiveBaseActivity extends BaseActivity {
       builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface d, int which) {
-//          sendGiftMsg(dialog,id);
+          recharge();
           dialog.dismiss();
         }
       }).setPositiveButton("取消", new DialogInterface.OnClickListener() {
@@ -549,6 +550,11 @@ public abstract class LiveBaseActivity extends BaseActivity {
       builder.show();
     }
   }
+
+  private void recharge() {
+    MFGT.gotoChangeRecharge(LiveBaseActivity.this);
+  }
+
   private void sendGiftMsg(RoomGiftListDialog dialog,int id) {
     dialog.dismiss();
     User user = EaseUserUtils.getAppUserInfo(EMClient.getInstance().getCurrentUser());

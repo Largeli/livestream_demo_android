@@ -202,4 +202,24 @@ public class NetDao {
                 .targetClass(String.class)
                 .execute(listener);
     }
+
+    public static void recharge(Context context,String username,int rmb ,OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_RECHARGE)
+                .addParam("uname",username)
+                .addParam("rmb",String.valueOf(rmb))
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
+    public static void getGivingGiftStatements(Context context,String username,int pageId,int pageSize ,OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_RECHARGE_STATEMENTS_PAGE)
+                .addParam("uname",username)
+                .addParam("pageId",String.valueOf(pageId))
+                .addParam("pageSize",String.valueOf(pageSize))
+                .targetClass(String.class)
+                .execute(listener);
+    }
+
 }

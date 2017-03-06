@@ -7,6 +7,7 @@ import android.content.Intent;
 import cn.ucai.live.I;
 import cn.ucai.live.R;
 import cn.ucai.live.ui.activity.ChangeActivity;
+import cn.ucai.live.ui.activity.ChangeRechargeActivity;
 import cn.ucai.live.ui.activity.LoginActivity;
 import cn.ucai.live.ui.activity.MainActivity;
 import cn.ucai.live.ui.activity.RegisterActivity;
@@ -49,6 +50,10 @@ public class MFGT {
 
     public static void gotoChange(Activity activity) {
         startActivity(activity,ChangeActivity.class);
+    }
+
+    public static void gotoChangeRecharge(Activity activity) {
+        startActivity(activity, ChangeRechargeActivity.class);
     }
 }
 

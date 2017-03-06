@@ -213,10 +213,12 @@ public interface I {
 	String BACK_MAIN_FROM_CHAT                      =        "back_main_from_chat";
 
 	String REQUEST_ALL_GIFTS                        =         "live/getAllGifts";
+	/** 客户端分页加载送礼物流水*/
 	String REQUEST_RECHARGE_STATEMENTS_PAGE         =         "live/getRechargeStatemants";
 	String REQUEST_BALANCE                          =         "live/getBalance";
 	String REQUEST_ANCHOR_GIFT                      =         "live/getGiftStatementsByAnchor";
 	String REQUEST_GIVING_GIGT                      =         "live/givingGifts";
+	/** 账户充值*/
 	String REQUEST_RECHARGE                        =         "live/recharge";
 	String REQUEST_GET_ALL_CHATROOM                 =          "live/getAllChatRoom";
 	String REQUEST_CREATE_CHATROOM                   =          "live/createChatRoom";
